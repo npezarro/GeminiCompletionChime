@@ -2,7 +2,7 @@
 // @name        Gemini Completion Ping (UI + Network, background-safe)
 // @namespace   nicholas.tools
 // @version     6.0.0
-// @description Chime + Desktop Notification on completion. Detects completion via (1) network request finishing (works even if UI doesn't update in background) + (2) Stop button fallback. Loud logging.
+// @description Chime + Desktop Notification on completion. Detects completion via (1) network request finishing (works even if UI doesn't update in background) + (2) Stop button fallback.
 // @match       https://gemini.google.com/*
 // @grant       none
 // @run-at      document-start
@@ -17,7 +17,7 @@
   const CONFIG = {
     // Polling fallback (UI-based)
     POLL_MS: 750,
-    HEARTBEAT_LOG: true,
+    HEARTBEAT_LOG: false,
 
     // Network-based completion (primary)
     NET_DETECT: true,
@@ -49,7 +49,7 @@
     AUDIO: true,
 
     // Console verbosity for network matching decisions
-    NET_DEBUG: true,
+    NET_DEBUG: false,
   };
 
   /* =========================
