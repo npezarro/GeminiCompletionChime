@@ -2,13 +2,18 @@
   "name": "gemini-completion-chime",
   "version": "6.0.0",
   "private": true,
+  "type": "module",
   "description": "Chime on Gemini completion — FSM + Network detection",
   "scripts": {
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "lint": "eslint ."
   },
   "devDependencies": {
-    "vitest": "^3.1.1",
-    "jsdom": "^26.1.0"
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.3.0",
+    "globals": "^17.6.0",
+    "jsdom": "^26.1.0",
+    "vitest": "^3.1.1"
   }
 }
