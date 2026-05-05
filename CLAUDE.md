@@ -35,7 +35,8 @@ For the full ruleset, see `agent.md` in this repository.
 
 - Framework: Vitest with jsdom environment
 - Run tests: `npm test` (single run) or `npm test:watch` (watch mode)
-- CI: GitHub Actions (`.github/workflows/test.yml`) runs `npm test` on push/PR to `main` (Node 20)
+- Lint: `npm run lint` (ESLint v9 flat config in `eslint.config.js`)
+- CI: GitHub Actions (`.github/workflows/test.yml`) runs lint + tests on push/PR to `main` (Node 20)
 
 ## Module Structure
 
