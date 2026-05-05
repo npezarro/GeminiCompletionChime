@@ -182,7 +182,7 @@ export function createFSM(deps, config = {}) {
     pollId = 0;
   }
 
-  function arm(reason) {
+  function arm(_reason) {
     s = {
       id: ++sid,
       state: STATE.ARMED,

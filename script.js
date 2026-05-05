@@ -224,11 +224,11 @@
   // Unlock audio + request notification permission on first interaction
   const unlock = async () => {
     requestNotifyPermission();
-    try { await primeAudioEl.play(); primeAudioEl.pause(); primeAudioEl.currentTime = 0; } catch {}
+    try { await primeAudioEl.play(); primeAudioEl.pause(); primeAudioEl.currentTime = 0; } catch { /* expected: autoplay policy */ }
     try {
       const c = ensureCtx();
       if (c && c.state !== "running") await c.resume();
-    } catch {}
+    } catch { /* expected: autoplay policy */ }
     window.removeEventListener("pointerdown", unlock, true);
     window.removeEventListener("keydown", unlock, true);
     log("🔓 Audio/Notifications unlocked", "#b388ff");
@@ -475,7 +475,7 @@
 
           this.addEventListener("progress", () => {
             // responseText length proxy (not bytes), still helpful for debugging
-            try { s && (s.net.bytes = Math.max(s.net.bytes, (this.responseText || "").length)); } catch {}
+            try { s && (s.net.bytes = Math.max(s.net.bytes, (this.responseText || "").length)); } catch { /* CORS may block responseText */ }
           });
 
           this.addEventListener("loadend", () => {
