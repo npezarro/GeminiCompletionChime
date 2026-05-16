@@ -42,3 +42,8 @@ For the full ruleset, see `agent.md` in this repository.
 
 - `script.js` — Tampermonkey userscript entry point
 - `fsm.js` — Extracted FSM module for testability. Exports: `STATE` (ARMED, STREAMING, DONE), `DEFAULT_CONFIG`, `createFSM(config)`
+
+## Tampermonkey Standards
+
+- **Auto-Update Headers:** `script.js` must include `@updateURL` and `@downloadURL` in the UserScript header. Bump `@version` on every change so Tampermonkey detects updates.
+- **Debug/Verbose Logging:** Ship with all debug/verbose logging flags **disabled**. Use boolean constants (`const DEBUG = false`) and gate console output behind them. Never commit with debug flags enabled.
