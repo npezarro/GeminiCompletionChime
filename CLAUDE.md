@@ -42,3 +42,10 @@ For the full ruleset, see `agent.md` in this repository.
 
 - `script.js` — Tampermonkey userscript entry point
 - `fsm.js` — Extracted FSM module for testability. Exports: `STATE` (ARMED, STREAMING, DONE), `DEFAULT_CONFIG`, `createFSM(config)`
+
+## Tampermonkey Standards
+
+- **Auto-update headers required:** The `.user.js` file must include `@updateURL` and `@downloadURL` pointing at the hosted copy (e.g., `https://example.com/GeminiCompletionChime.user.js`). Without these, Tampermonkey cannot detect updates.
+- **Bump `@version`** on every change so Tampermonkey detects the update.
+- **Ship with debug/verbose logging disabled.** Use boolean constants (e.g., `const DEBUG = false`) and gate console output behind them. Never commit with debug flags enabled. This repo had `HEARTBEAT_LOG` and `NET_DEBUG` flags left enabled in production, causing console spam every 750ms for all users.
+- **Install page:** When updating this script, update the entry in `~/repos/browser-agent/tm-scripts/index.html` and the source mapping in `sync-tm-scripts.sh`, then run `sync-tm-scripts.sh` to deploy.
