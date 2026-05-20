@@ -38,6 +38,12 @@ For the full ruleset, see `agent.md` in this repository.
 - Lint: `npm run lint` (ESLint v9 flat config in `eslint.config.js`)
 - CI: GitHub Actions (`.github/workflows/test.yml`) runs lint + tests on push/PR to `main` (Node 20)
 
+## Tampermonkey Userscript Rules
+
+- **Debug flags must be disabled before committing.** Use boolean constants (`const DEBUG = false`) and gate all console output behind them. Never commit with debug/verbose flags enabled. This repo had `HEARTBEAT_LOG` and `NET_DEBUG` left enabled (April 2026), producing console spam every 750ms for all users.
+- **Bump `@version` on every change** so Tampermonkey detects the update and auto-updates for users.
+- Preserve the `==UserScript==` header block integrity when editing `script.js`. Do not remove or reorder header fields.
+
 ## Module Structure
 
 - `script.js` — Tampermonkey userscript entry point
