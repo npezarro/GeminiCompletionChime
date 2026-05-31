@@ -55,3 +55,27 @@ For the full ruleset, see `agent.md` in this repository.
 - Bump `@version` on every change so Tampermonkey detects the update.
 - Ship with all debug/verbose logging flags disabled. Use boolean constants (`const DEBUG = false`) and gate console output behind them. Never commit `true` to production.
 - Deploy updated scripts via `~/repos/browser-agent/sync-tm-scripts.sh` to sync to VM hosting.
+
+## Per-Tab Sandbox Overhead
+
+This script runs continuously on every Gemini tab and has historically used heartbeat polling (e.g., `HEARTBEAT_LOG` every 750ms). Tampermonkey's per-tab sandbox architecture can cause severe CPU overhead when scripts with frequent timers run across many tabs. In April 2026, Edge accumulated ~14 hours of CPU time with only 6 tabs open in a related script (browser-logs) due to TM's per-tab sandbox overhead.
+
+**Mitigations to apply when modifying this script:**
+- Keep polling intervals as long as the UX allows (the current 750ms heartbeat is the lower bound).
+- Avoid adding new persistent timers; reuse the existing FSM tick where possible.
+- Never reintroduce always-on `console.*` logging — gate behind `const DEBUG = false`.
+
+**When to migrate to an MV3 Chrome extension** (e.g., chrome-automation hub):
+- If polling/console patching ever needs to run on every page (`@match *://*/*`) rather than scoped to Gemini.
+- If Task Manager shows high CPU/memory from TM specifically.
+- If the script needs a single shared service worker instead of per-tab instances.
+
+For now, scoped `@match` on the Gemini domain keeps this within TM's reasonable territory.
+
+## Install Page Maintenance
+
+The TM scripts install page lives at `example.com/tm-scripts/` (OAuth-gated). When bumping `@version`:
+
+1. Update the `@version` in `script.js`.
+2. Update the version field for this script in `~/repos/browser-agent/tm-scripts/index.html` SCRIPTS array.
+3. Run `~/repos/browser-agent/sync-tm-scripts.sh` to deploy.
