@@ -36,7 +36,8 @@ For the full ruleset, see `agent.md` in this repository.
 - Framework: Vitest with jsdom environment
 - Run tests: `npm test` (single run) or `npm test:watch` (watch mode)
 - Lint: `npm run lint` (ESLint v9 flat config in `eslint.config.js`)
-- CI: GitHub Actions (`.github/workflows/test.yml`) runs lint + tests on push/PR to `main` (Node 20)
+- CI: GitHub Actions (`.github/workflows/test.yml`) runs lint + tests on push/PR to `main`
+- **Pin CI to Node.js 22 (current LTS).** Node 20 reached end-of-life on April 30, 2026 — the workflow's `node-version` must be `22`, not `20` or `lts/*` (which can shift unexpectedly). The CI file must be named `test.yml`, and `package-lock.json` must stay committed (CI uses `npm ci`, which requires the lockfile).
 
 ## Tampermonkey Userscript Rules
 
