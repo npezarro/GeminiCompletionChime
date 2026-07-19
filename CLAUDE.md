@@ -80,3 +80,13 @@ The TM scripts install page lives at `example.com/tm-scripts/` (OAuth-gated). Wh
 1. Update the `@version` in `script.js`.
 2. Update the version field for this script in `~/repos/browser-agent/tm-scripts/index.html` SCRIPTS array.
 3. Run `~/repos/browser-agent/sync-tm-scripts.sh` to deploy.
+
+## Testing Practices
+
+The "Testing" section above covers how to *run* the suite. These are the output-affecting practice rules from `agentGuidance/guidance/testing.md`, incorporated here because this repo has a real Vitest suite (`fsm.test.js`) around the FSM + network detection logic.
+
+- **Bug fixes get a regression test.** When fixing an FSM or completion-detection bug, first add a test that fails without the fix and passes with it. This locks in the fix against the whole class of regression, not just the one reported instance.
+- **New functions with logic get a unit test** covering the happy path plus edge cases — empty/null/undefined input, boundary conditions, and error paths. Config- or copy-only changes need no new test; don't add test infra that isn't there unless asked.
+- **Mock at boundaries, not internals.** The FSM's boundaries are the DOM (jsdom elements), timers/`Date.now()`, and the `fetch`/network interception used for streaming detection. Stub those rather than reaching into FSM private state, and reset mocks between tests.
+- **Test the contract, not the implementation.** Assert on exported behavior (`STATE` transitions, `DEFAULT_CONFIG`, `createFSM`), not private variables, jsdom internals, or Vitest itself.
+- **Keep the suite green before every commit.** `npm test` (single run) must pass locally; CI runs the same on push/PR.
